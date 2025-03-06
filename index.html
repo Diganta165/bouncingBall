@@ -8,7 +8,43 @@
     <link rel="stylesheet" href="./css/style.css">
 </head>
 <body>
-    
+    <div id="main_container">
+        <div id="score_container">
+            <div class="score_wrapper">
+                <span>Score: </span>
+                <span id="score">0</span>
+
+            </div>
+
+        </div>
+        <div id="canvas_container">
+            <canvas id="game_canvas">
+
+            </canvas>
+        </div>
+
+        <div id="buttons_container">
+            <div>
+                <button>Start</button>
+                <button>Add Ball</button>
+                <button>Change Ball Color</button>
+                <button>Increase Speed</button>
+                <button>Decrease Speed</button>
+                <button>Restart</button>
+            </div>
+
+            <div>
+                <button>Add Square</button>
+
+                <div class="movemnet_btn_wrapper">
+                    <button>LEFT</button>
+                    <button>RIGHT</button>
+                    <button>UP</button>
+                    <button>DOWN</button>
+                </div>
+            </div>
+        </div>
+    </div>
 
 
     <script src="./js/bouncingBall.js"></script>
