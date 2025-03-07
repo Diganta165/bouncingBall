@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Bouncing Balls</title>
+    <style>
+        canvas {
+            display: block;
+            margin: 0 auto;
+            background-color: #f0f0f0;
+        }
+        button {
+            display: block;
+            margin: 10px auto;
+        }
+    </style>
+</head>
+<body>
+    <canvas id="myCanvas" width="800" height="400"></canvas>
+    <button id="startBtn">Start</button>
+    <button id="addBallBtn">Add Ball</button>
+    <button id="changeColourBtn">Change Ball Colour</button>
+    <button id="restartBtn">Restart</button>
+    <button id="increaseSpeedBtn">Increase Speed</button>
+    <button id="decreaseSpeedBtn">Decrease Speed</button>
+
+    <script>
+        const canvas = document.getElementById('myCanvas');
+        const ctx = canvas.getContext('2d');
+        const balls = [];
+        let animationFrameId;
+        let speed = 2;
+
+        function createBall(x, y, radius, color) {
+            const dx = (Math.random() - 0.5) * speed;
+            const dy = -Math.random() * speed;
+
+            return { x, y, radius, color, dx, dy };
+        }
+
+        function drawBall(ball) {
+            ctx.beginPath();
+            ctx.arc(ball.x, ball.y, ball.radius, 0, Math.PI * 2);
+            ctx.fillStyle = ball.color;
+            ctx.fill();
+            ctx.closePath();
+        }
+
+        function updateBall(ball) {
+            ball.x += ball.dx;
+            ball.y += ball.dy;
+
+            if (ball.x + ball.radius > canvas.width || ball.x - ball.radius < 0) {
+                ball.dx = -ball.dx;
+            }
+
+            if (ball.y + ball.radius > canvas.height || ball.y - ball.radius < 0) {
+                ball.dy = -ball.dy;
+            }
+
+            drawBall(ball);
+        }
+
+        function draw() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            balls.forEach(updateBall);
+            animationFrameId = requestAnimationFrame(draw);
+        }
+
+        document.getElementById('startBtn').addEventListener('click', function() {
+            if (this.textContent === 'Start') {
+                balls.push(createBall(50, canvas.height - 20, 20, 'green'));
+                this.textContent = 'Pause';
+                draw();
+            } else if (this.textContent === 'Pause') {
+                cancelAnimationFrame(animationFrameId);
+                this.textContent = 'Resume';
+            } else {
+                draw();
+                this.textContent = 'Pause';
+            }
+        });
+
+        document.getElementById('addBallBtn').addEventListener('click', function() {
+            const x = Math.random() * canvas.width;
+            balls.push(createBall(x, canvas.height - 20, 20, 'green'));
+        });
+
+        document.getElementById('changeColourBtn').addEventListener('click', function() {
+            balls.forEach(ball => {
+                ball.color = '#' + Math.floor(Math.random() * 16777215).toString(16);
+            });
+        });
+
+        document.getElementById('restartBtn').addEventListener('click', function() {
+            cancelAnimationFrame(animationFrameId);
+            balls.length = 0;
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            document.getElementById('startBtn').textContent = 'Start';
+        });
+
+        document.getElementById('increaseSpeedBtn').addEventListener('click', function() {
+            speed += 0.5;
+            balls.forEach(ball => {
+                ball.dx *= 1.1;
+                ball.dy *= 1.1;
+            });
+        });
+
+        document.getElementById('decreaseSpeedBtn').addEventListener('click', function() {
+            speed = Math.max(1, speed - 0.5);
+            balls.forEach(ball => {
+                ball.dx *= 0.9;
+                ball.dy *= 0.9;
+            });
+        });
+    </script>
+</body>
+</html>
