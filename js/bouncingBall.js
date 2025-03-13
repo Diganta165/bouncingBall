@@ -18,6 +18,7 @@ let radius = 4;
 let x = radius;
 let y = canvas.height - radius;
 let startAngle = 0;
+let speed = 4;
 
 const ball = {
     x: x,
@@ -30,11 +31,11 @@ const ball = {
 const endAngle = Math.PI * 2;
 const color = "green";
 
-function createBall(x, y, radius, color) {
-    const dx = (Math.random() - 0.5) * 4;
-    const dy = (Math.random() - 0.5) * 4;
-
-    return { x, y, radius, color, dx, dy };
+function createBall(x, y, radius) {
+    const dx = (Math.random() - 0.5) * speed;
+    const dy = (Math.random() - 0.5) * speed;
+    console.log("speed", speed)
+    return { x, y, radius, dx, dy };
 }
 
 const drawBall = (ctx, x, y, radius, startAngle )=>{
@@ -64,16 +65,17 @@ const updateBall = (ball)=>{
         ball.dy = -ball.dy;
     }
 
-    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    // ctx.clearRect(0, 0, canvas.width, canvas.height);
     drawBall(ctx, ball.x, ball.y, ball.radius, startAngle);
 }
 function animate() {
     // !isPaused && updateBall(ball);
     if(!isPaused){
         ctx.clearRect(0, 0, canvas.width, canvas.height);
-        balls.forEach(updateBall)
+        // balls.forEach(updateBall)
+        balls.forEach( ball=> updateBall(ball));
+        requestAnimationFrame(animate);
     }
-    requestAnimationFrame(animate);
 }
 
 
@@ -85,13 +87,15 @@ startBtn.addEventListener("click", ()=>{
 });
 
 newBallBtn.addEventListener("click", ()=>{
-    console.log("hi")
+    // console.log("hi")
     // updateBall(ball);
     // animate();
     // drawBall(ctx, ball.x, ball.y, ball.radius, startAngle);
     const x = Math.random() * canvas.width;
     const y = Math.random() * canvas.height;
-    balls.push(createBall(x, y, 20, 'green'));
+    balls.push(createBall(x, y, radius));
+    console.log("balls", balls)
+    animate();
 });
 
-animate();
+// animate();
