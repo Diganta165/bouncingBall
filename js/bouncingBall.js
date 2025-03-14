@@ -6,12 +6,15 @@ const ctx = canvas.getContext('2d');
 // all buttons
 const startBtn = document.getElementById("start_btn");
 const newBallBtn = document.getElementById("add_ball_btn");
+const changeColorBtn = document.getElementById("change_ball_color_btn");
 
 canvas.width = 800;
 canvas.height = 400;
 let animationFrame = null;
 const balls = [];
-let isPaused = false;
+const ballColors = ["red", "blue", "green", "yellow", "purple", "orange", "pink", "brown", "black", "white"];
+let isPaused = true;
+let firstClick = false;
 
 
 // initial x, y & radius values
@@ -48,12 +51,7 @@ const drawBall = (ctx, x, y, radius, startAngle )=>{
     ctx.stroke();
 
 }
-// drawBall(ctx, 0, 0, 4, 0);
-// drawBall(ctx, ball.x, ball.y, ball.radius, startAngle);
 
-
-
-// update the ball's position
 const updateBall = (ball)=>{
     ball.x += ball.dx;
     ball.y += ball.dy;
@@ -65,23 +63,13 @@ const updateBall = (ball)=>{
     if(ball.y + ball.radius > canvas.height || ball.y - ball.radius < 0){
         ball.dy = -ball.dy;
     }
-
-    // ctx.clearRect(0, 0, canvas.width, canvas.height);
     drawBall(ctx, ball.x, ball.y, ball.radius, startAngle);
 }
 function animate() {
-    // !isPaused && updateBall(ball);
-    ctx.clearRect(0, 0, canvas.width, canvas.height);
     if(isPaused){
-        // ctx.clearRect(0, 0, canvas.width, canvas.height);
-        // balls.forEach(updateBall)
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
         balls.forEach( ball=> updateBall(ball));
-        // requestAnimationFrame(animate);
     }
-        // ctx.clearRect(0, 0, canvas.width, canvas.height);
-        // balls.push(createBall(x, y, radius));
-    
-    // balls.forEach( ball=> updateBall(ball));
     
     requestAnimationFrame(animate);
 }
@@ -92,19 +80,28 @@ animate();
 startBtn.addEventListener("click", ()=>{
     isPaused ? startBtn.textContent = "Start" : startBtn.textContent = "Pause";
     isPaused = !isPaused;
-    // animate(isPaused);
+    
+    if(!firstClick){
+        firstClick = true;
+        balls.push(createBall(x, y, radius));
+    };
+        
 });
 
 newBallBtn.addEventListener("click", ()=>{
-    // console.log("hi")
-    // updateBall(ball);
-    // animate();
-    // drawBall(ctx, ball.x, ball.y, ball.radius, startAngle);
     const x = Math.random() * canvas.width;
     const y = Math.random() * canvas.height;
     balls.push(createBall(x, y, radius));
-    console.log("balls", balls)
-    // animate();
 });
 
-// animate();
+// Change Ball Color
+changeColorBtn.addEventListener("click", ()=>{
+    // const colorIndex = Math.floor(Math.random() * 10)
+    // balls.forEach(ball => ball.color = ""+  ballColors[colorIndex]);
+    balls.forEach(ball => ball.color = '#' + Math.floor(Math.random() * 16777215).toString(16));
+    // ctx.fillStyle = colorIndex;
+
+    ball.color = '#' + Math.floor(Math.random() * 16777215).toString(16);
+
+    console.log(ballColors[Math.floor(Math.random() * 10).toString()])
+}); 
