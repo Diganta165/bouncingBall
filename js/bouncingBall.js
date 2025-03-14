@@ -9,6 +9,7 @@ const newBallBtn = document.getElementById("add_ball_btn");
 
 canvas.width = 800;
 canvas.height = 400;
+let animationFrame = null;
 const balls = [];
 let isPaused = false;
 
@@ -70,20 +71,28 @@ const updateBall = (ball)=>{
 }
 function animate() {
     // !isPaused && updateBall(ball);
-    if(!isPaused){
-        ctx.clearRect(0, 0, canvas.width, canvas.height);
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    if(isPaused){
+        // ctx.clearRect(0, 0, canvas.width, canvas.height);
         // balls.forEach(updateBall)
         balls.forEach( ball=> updateBall(ball));
-        requestAnimationFrame(animate);
+        // requestAnimationFrame(animate);
     }
+        // ctx.clearRect(0, 0, canvas.width, canvas.height);
+        // balls.push(createBall(x, y, radius));
+    
+    // balls.forEach( ball=> updateBall(ball));
+    
+    requestAnimationFrame(animate);
 }
 
-
+animate();
 
 
 startBtn.addEventListener("click", ()=>{
     isPaused ? startBtn.textContent = "Start" : startBtn.textContent = "Pause";
     isPaused = !isPaused;
+    // animate(isPaused);
 });
 
 newBallBtn.addEventListener("click", ()=>{
@@ -95,7 +104,7 @@ newBallBtn.addEventListener("click", ()=>{
     const y = Math.random() * canvas.height;
     balls.push(createBall(x, y, radius));
     console.log("balls", balls)
-    animate();
+    // animate();
 });
 
 // animate();
