@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html>
+
 <head>
     <title>Bouncing Balls</title>
     <style>
@@ -8,12 +9,14 @@
             margin: 0 auto;
             background-color: #f0f0f0;
         }
+
         button {
             display: block;
             margin: 10px auto;
         }
     </style>
 </head>
+
 <body>
     <canvas id="myCanvas" width="800" height="400"></canvas>
     <button id="startBtn">Start</button>
@@ -22,9 +25,11 @@
     <button id="restartBtn">Restart</button>
     <button id="increaseSpeedBtn">Increase Speed</button>
     <button id="decreaseSpeedBtn">Decrease Speed</button>
+    <button id="addsqr">addsqr</button>
 
     <script>
         const canvas = document.getElementById('myCanvas');
+        const addSquareBtn = document.getElementById('addsqr');
         const ctx = canvas.getContext('2d');
         const balls = [];
         let animationFrameId;
@@ -66,7 +71,7 @@
             animationFrameId = requestAnimationFrame(draw);
         }
 
-        document.getElementById('startBtn').addEventListener('click', function() {
+        document.getElementById('startBtn').addEventListener('click', function () {
             if (this.textContent === 'Start') {
                 balls.push(createBall(50, canvas.height - 20, 20, 'green'));
                 this.textContent = 'Pause';
@@ -80,25 +85,25 @@
             }
         });
 
-        document.getElementById('addBallBtn').addEventListener('click', function() {
+        document.getElementById('addBallBtn').addEventListener('click', function () {
             const x = Math.random() * canvas.width;
             balls.push(createBall(x, canvas.height - 20, 20, 'green'));
         });
 
-        document.getElementById('changeColourBtn').addEventListener('click', function() {
+        document.getElementById('changeColourBtn').addEventListener('click', function () {
             balls.forEach(ball => {
                 ball.color = '#' + Math.floor(Math.random() * 16777215).toString(16);
             });
         });
 
-        document.getElementById('restartBtn').addEventListener('click', function() {
+        document.getElementById('restartBtn').addEventListener('click', function () {
             cancelAnimationFrame(animationFrameId);
             balls.length = 0;
             ctx.clearRect(0, 0, canvas.width, canvas.height);
             document.getElementById('startBtn').textContent = 'Start';
         });
 
-        document.getElementById('increaseSpeedBtn').addEventListener('click', function() {
+        document.getElementById('increaseSpeedBtn').addEventListener('click', function () {
             speed += 0.5;
             balls.forEach(ball => {
                 ball.dx *= 1.1;
@@ -106,13 +111,26 @@
             });
         });
 
-        document.getElementById('decreaseSpeedBtn').addEventListener('click', function() {
+        document.getElementById('decreaseSpeedBtn').addEventListener('click', function () {
             speed = Math.max(1, speed - 0.5);
             balls.forEach(ball => {
                 ball.dx *= 0.9;
                 ball.dy *= 0.9;
             });
         });
+
+
+        // Draw Square
+        const drawSquare = (ctx, x, y, size, color) => {
+            // const ctx = canvas.getContext('2d');
+            ctx.fillStyle = color;
+            ctx.fillRect(x, y, size, size);
+        }
+
+        addSquareBtn.addEventListener("click", () => {
+            drawSquare(ctx, 10, 10, 50, "red");
+        });
     </script>
 </body>
+
 </html>
